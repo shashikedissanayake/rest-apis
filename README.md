@@ -2,9 +2,8 @@
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
-- hello-world - Code for the application's Lambda function and Project Dockerfile.
+- server - Code for the application's Lambda function and Project Dockerfile.
 - events - Invocation events that you can use to invoke the function.
-- hello-world/tests - Unit tests for the application code.
 - template.yaml - A template that defines the application's AWS resources.
 
 The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
@@ -25,7 +24,7 @@ You may need the following for local testing.
 To build and deploy your application for the first time, run the following in your shell:
 
 ```bash
-sam build
+sam build --use-container
 sam deploy --guided
 ```
 
@@ -44,10 +43,10 @@ You can find your API Gateway Endpoint URL in the output values displayed after 
 Build your application with the `sam build` command.
 
 ```bash
-rest-apis$ sam build
+rest-apis$ sam build --use-container
 ```
 
-The SAM CLI builds a docker image from a Dockerfile and then installs dependencies defined in `hello-world/package.json` inside the docker image. The processed template file is saved in the `.aws-sam/build` folder.
+The SAM CLI builds a docker image from a Dockerfile and then installs dependencies defined in `server/package.json` inside the docker image. The processed template file is saved in the `.aws-sam/build` folder.
 
 Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
 
@@ -71,8 +70,8 @@ The SAM CLI reads the application template to determine the API's routes and the
         HelloWorld:
           Type: Api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /{any+}
+            Method: any
 ```
 
 ## Add a resource to your application
@@ -90,15 +89,6 @@ rest-apis$ sam logs -n HelloWorldFunction --stack-name rest-apis --tail
 
 You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
 
-## Unit tests
-
-Tests are defined in the `hello-world/tests` folder in this project. Use NPM to install the [Mocha test framework](https://mochajs.org/) and run unit tests from your local machine.
-
-```bash
-rest-apis$ cd hello-world
-hello-world$ npm install
-hello-world$ npm run test
-```
 
 ## Cleanup
 
