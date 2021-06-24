@@ -10,7 +10,7 @@ import { Handler, Context } from 'aws-lambda';
 let cachedServer: Server;
 
 async function bootstrapServer(): Promise<Server> {
-  if (cachedServer) {
+  if (!cachedServer) {
     try {
       const expressApp = express();
       const nestApp = await NestFactory.create(
