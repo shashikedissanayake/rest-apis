@@ -8,22 +8,23 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
 
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
+      MemorySize: 512
       PackageType: Image
       Events:
         HelloWorld:
           Type: Api
           Properties:
-            Path: /hello
-            Method: get
+            Path: /{any+}
+            Method: any
     Metadata:
       DockerTag: nodejs14.x-v1
-      DockerContext: ./hello-world
+      DockerContext: ./server
       Dockerfile: Dockerfile
 
 Outputs:
